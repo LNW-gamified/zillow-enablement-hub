@@ -58,7 +58,7 @@ const programCards = [
     Icon: CertIcon,
   },
   {
-    title: 'Dashboard',
+    title: 'Manager Dashboard',
     href: '/dashboard',
     desc: 'Track team readiness and certification progress across your org.',
     Icon: DashIcon,
