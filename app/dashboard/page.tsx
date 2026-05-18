@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, Tooltip, Cell, LabelList, ResponsiveContainer,
   LineChart, Line, CartesianGrid,
 } from 'recharts';
 import { supabase } from '@/lib/supabase';
@@ -24,14 +24,26 @@ type Risk = 'high' | 'mid' | 'low';
 // ─── Seed data ────────────────────────────────────────────────────────────────
 
 const SEED: Rep[] = [
-  { id: 's1', rep_name: 'Jordan Mills',  score: 92, passed: true,  completed_at: '2026-05-01T10:00:00Z', real: false },
-  { id: 's2', rep_name: 'Priya Nair',    score: 88, passed: true,  completed_at: '2026-05-02T09:30:00Z', real: false },
-  { id: 's3', rep_name: 'Derek Walsh',   score: 74, passed: true,  completed_at: '2026-05-03T14:15:00Z', real: false },
-  { id: 's4', rep_name: 'Cami Torres',   score: 68, passed: false, completed_at: '2026-05-04T11:00:00Z', real: false },
-  { id: 's5', rep_name: 'Marcus Lee',    score: 95, passed: true,  completed_at: '2026-05-05T08:45:00Z', real: false },
-  { id: 's6', rep_name: 'Brie Hoffman',  score: 55, passed: false, completed_at: '2026-05-06T13:00:00Z', real: false },
-  { id: 's7', rep_name: 'Nate Okafor',   score: 81, passed: true,  completed_at: '2026-05-07T10:30:00Z', real: false },
-  { id: 's8', rep_name: 'Simone Grant',  score: 71, passed: true,  completed_at: '2026-05-08T09:00:00Z', real: false },
+  { id: 's01', rep_name: 'Jordan Mills',      score: 92, passed: true,  completed_at: '2026-04-15T10:00:00Z', real: false },
+  { id: 's02', rep_name: 'Priya Nair',        score: 88, passed: true,  completed_at: '2026-04-16T09:30:00Z', real: false },
+  { id: 's03', rep_name: 'Marcus Lee',        score: 95, passed: true,  completed_at: '2026-04-17T08:45:00Z', real: false },
+  { id: 's04', rep_name: 'Derek Walsh',       score: 74, passed: true,  completed_at: '2026-04-19T14:15:00Z', real: false },
+  { id: 's05', rep_name: 'Simone Grant',      score: 71, passed: true,  completed_at: '2026-04-21T09:00:00Z', real: false },
+  { id: 's06', rep_name: 'Nate Okafor',       score: 81, passed: true,  completed_at: '2026-04-22T10:30:00Z', real: false },
+  { id: 's07', rep_name: 'Brie Hoffman',      score: 55, passed: false, completed_at: '2026-04-24T13:00:00Z', real: false },
+  { id: 's08', rep_name: 'Cami Torres',       score: 68, passed: false, completed_at: '2026-04-25T11:00:00Z', real: false },
+  { id: 's09', rep_name: 'Ryan Patel',        score: 85, passed: true,  completed_at: '2026-04-26T09:15:00Z', real: false },
+  { id: 's10', rep_name: 'Keisha Monroe',     score: 90, passed: true,  completed_at: '2026-04-28T11:30:00Z', real: false },
+  { id: 's11', rep_name: 'Tyler Brooks',      score: 62, passed: false, completed_at: '2026-04-29T14:00:00Z', real: false },
+  { id: 's12', rep_name: 'Aisha Washington',  score: 77, passed: true,  completed_at: '2026-05-01T10:15:00Z', real: false },
+  { id: 's13', rep_name: 'Connor Hayes',      score: 83, passed: true,  completed_at: '2026-05-03T09:45:00Z', real: false },
+  { id: 's14', rep_name: 'Lucia Fernandez',   score: 91, passed: true,  completed_at: '2026-05-05T08:30:00Z', real: false },
+  { id: 's15', rep_name: 'Devon Park',        score: 69, passed: false, completed_at: '2026-05-06T13:30:00Z', real: false },
+  { id: 's16', rep_name: 'Megan Tully',       score: 78, passed: true,  completed_at: '2026-05-08T10:00:00Z', real: false },
+  { id: 's17', rep_name: 'James Obi',         score: 86, passed: true,  completed_at: '2026-05-10T09:00:00Z', real: false },
+  { id: 's18', rep_name: 'Sara Lindqvist',    score: 73, passed: true,  completed_at: '2026-05-11T14:45:00Z', real: false },
+  { id: 's19', rep_name: 'Chris Nakamura',    score: 58, passed: false, completed_at: '2026-05-13T11:15:00Z', real: false },
+  { id: 's20', rep_name: 'Danielle Russo',    score: 80, passed: true,  completed_at: '2026-05-15T09:30:00Z', real: false },
 ];
 
 const SCORE_BUCKETS = [
@@ -286,18 +298,16 @@ export default function DashboardPage() {
   const timelineData = useMemo(() => {
     if (!allReps.length) return [];
     const sorted = [...allReps].sort((a, b) => new Date(a.completed_at).getTime() - new Date(b.completed_at).getTime());
-    const start = new Date(sorted[0].completed_at); start.setHours(0, 0, 0, 0);
-    const end   = new Date(); end.setHours(23, 59, 59, 999);
-    const result: { date: string; certified: number }[] = [];
+    const byDate = new Map<string, number>();
+    sorted.forEach((r) => {
+      const d = fmtShortDate(r.completed_at);
+      byDate.set(d, (byDate.get(d) ?? 0) + 1);
+    });
     let cumulative = 0;
-    const cursor = new Date(start);
-    while (cursor <= end) {
-      const dayStr = cursor.toDateString();
-      cumulative += sorted.filter((r) => new Date(r.completed_at).toDateString() === dayStr).length;
-      result.push({ date: fmtShortDate(cursor.toISOString()), certified: cumulative });
-      cursor.setDate(cursor.getDate() + 1);
-    }
-    return result;
+    return Array.from(byDate.entries()).map(([date, count]) => {
+      cumulative += count;
+      return { date, certified: cumulative };
+    });
   }, [allReps]);
 
   const filteredReps = useMemo(() => {
@@ -390,6 +400,7 @@ export default function DashboardPage() {
                     <Tooltip content={<ChartTooltip />} cursor={{ fill: '#f8fafc' }} />
                     <Bar dataKey="count" radius={[6, 6, 0, 0]}>
                       {scoreDistribution.map((b, i) => <Cell key={i} fill={b.fill} />)}
+                      <LabelList dataKey="count" position="top" style={{ fontSize: 12, fontWeight: 700, fill: '#374151' }} formatter={(v: unknown) => (v as number) > 0 ? String(v) : ''} />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -522,7 +533,7 @@ export default function DashboardPage() {
                       </td>
                       <td className="px-6 py-3.5">
                         <div className="flex items-center gap-3">
-                          <span className="font-bold text-zillow-navy tabular-nums text-sm w-7 flex-shrink-0">{rep.score}</span>
+                          <span className="font-bold text-zillow-navy text-sm flex-shrink-0" style={{ minWidth: '2ch', fontVariantNumeric: 'normal' }}>{rep.score}</span>
                           <div className="w-24 h-1.5 rounded-full bg-gray-100 overflow-hidden flex-shrink-0">
                             <div
                               className={`h-full rounded-full transition-all duration-700 ${rep.passed ? 'bg-green-500' : 'bg-amber-400'}`}
@@ -558,19 +569,21 @@ export default function DashboardPage() {
             </table>
           </div>
 
-          <div className="px-6 py-3 border-t border-gray-100 bg-[#FAFBFC] flex items-center justify-between gap-4 flex-wrap">
+          <div className="px-6 py-4 border-t border-gray-100 bg-[#FAFBFC] flex items-center justify-between gap-6 flex-wrap">
             <p className="text-xs text-zillow-slate">
               Certifications expire 90 days after completion. Reps must recertify before each major product update.
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5 flex-wrap">
+              <p className="text-xs font-semibold text-zillow-slate uppercase tracking-widest">Readiness Risk</p>
               {[
-                { color: 'bg-green-500', label: 'High Confidence (≥80)' },
-                { color: 'bg-amber-400', label: 'Certified (70–79)' },
-                { color: 'bg-red-500',   label: 'Needs Retry (<70)' },
-              ].map(({ color, label }) => (
-                <div key={label} className="flex items-center gap-1.5 text-xs text-zillow-slate">
-                  <span className={`w-2 h-2 rounded-full ${color}`} />
-                  {label}
+                { color: 'bg-green-500', label: 'High Confidence', sub: '≥ 80' },
+                { color: 'bg-amber-400', label: 'Certified',       sub: '70–79' },
+                { color: 'bg-red-500',   label: 'Needs Retry',     sub: '< 70' },
+              ].map(({ color, label, sub }) => (
+                <div key={label} className="flex items-center gap-2">
+                  <span className={`w-3 h-3 rounded-full flex-shrink-0 ${color}`} />
+                  <span className="text-sm font-semibold text-zillow-navy">{label}</span>
+                  <span className="text-xs text-zillow-slate">({sub})</span>
                 </div>
               ))}
             </div>
