@@ -203,6 +203,24 @@ export default function DashboardPage() {
 
       <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col gap-8">
 
+        {/* Go/No-Go banner */}
+        {(() => {
+          const isGreen = readyPct >= 80;
+          const isAmber = readyPct >= 70 && readyPct < 80;
+          const cfg = isGreen
+            ? { bg: 'bg-green-50', border: 'border-green-500', heading: 'text-green-800', sub: 'text-green-700', label: '✅ Launch Ready', body: 'Team has met the certification threshold. Recommend proceeding with Zillow Pro go-live.' }
+            : isAmber
+            ? { bg: 'bg-amber-50', border: 'border-amber-500', heading: 'text-amber-800', sub: 'text-amber-700', label: '⚠️ Proceed with Caution', body: 'Most reps are certified but 1–2 need recertification before launch.' }
+            : { bg: 'bg-red-50',   border: 'border-red-500',   heading: 'text-red-800',   sub: 'text-red-700',   label: '🚫 Launch Risk', body: 'Team has not met certification threshold. Delay go-live and schedule recertification for at-risk reps.' };
+          return (
+            <div className={`rounded-2xl border-l-4 px-6 py-5 ${cfg.bg} ${cfg.border}`}>
+              <p className={`font-bold text-base ${cfg.heading}`}>{cfg.label}</p>
+              <p className={`text-sm mt-1 leading-relaxed ${cfg.sub}`}>{cfg.body}</p>
+              <p className={`text-xs mt-2 opacity-70 ${cfg.sub}`}>Assessment as of {today}</p>
+            </div>
+          );
+        })()}
+
         {/* Gauge — full-width hero metric */}
         <Gauge pct={readyPct} />
 

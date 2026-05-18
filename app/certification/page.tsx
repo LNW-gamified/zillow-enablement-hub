@@ -258,7 +258,48 @@ export default function CertificationPage() {
     return (
       <>
         {hero}
-        <div className="flex flex-col items-center px-6 py-14">
+        <div className="flex flex-col items-center px-6 py-10 gap-6">
+
+          {/* Pre-screen info card */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 max-w-md w-full">
+            <p className="text-xs font-semibold uppercase tracking-widest text-zillow-blue mb-5">What to Expect</p>
+            <div className="flex flex-col gap-5">
+              <div>
+                <p className="text-xs font-semibold text-zillow-navy uppercase tracking-wide mb-2">What you'll be tested on</p>
+                <ul className="flex flex-col gap-1.5">
+                  {[
+                    'Product knowledge across the Zillow Pro suite',
+                    'Objection handling for skeptical Premier Agent partners',
+                    'Real-world scenario responses scored by AI',
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-sm text-[#374151]">
+                      <span className="mt-0.5 flex-shrink-0 w-4 h-4 rounded-full bg-blue-50 flex items-center justify-center">
+                        <svg className="w-2.5 h-2.5 text-zillow-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="grid grid-cols-3 gap-3 pt-1 border-t border-gray-100">
+                {[
+                  ['⏱', 'Time', '10–15 min'],
+                  ['🎯', 'Passing Score', '70 / 100'],
+                  ['🏅', 'What You Earn', 'Certified badge + dashboard entry'],
+                ].map(([emoji, label, value]) => (
+                  <div key={label} className="text-center">
+                    <p className="text-lg mb-0.5">{emoji}</p>
+                    <p className="text-xs font-semibold text-zillow-navy">{label}</p>
+                    <p className="text-xs text-zillow-slate leading-snug mt-0.5">{value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Name entry card */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-lg p-10 max-w-md w-full text-center">
             <p className="text-[#374151] text-sm mb-8 leading-relaxed">
               Demonstrate your Zillow Pro product knowledge and sales readiness. Earn 70 or more points to earn certification.

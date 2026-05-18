@@ -34,6 +34,14 @@ function KbIcon() {
   );
 }
 
+function HypothesisIcon() {
+  return (
+    <svg className="w-7 h-7 text-zillow-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  );
+}
+
 function ArrowIcon() {
   return (
     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -62,6 +70,12 @@ const programCards = [
     href: '/dashboard',
     desc: 'Track team readiness and certification progress across your org.',
     Icon: DashIcon,
+  },
+  {
+    title: 'Hypothesis Log',
+    href: '/hypothesis',
+    desc: 'See how certification data drives content iteration and program improvement.',
+    Icon: HypothesisIcon,
   },
   {
     title: 'Knowledge Base',
@@ -150,7 +164,7 @@ export default function HomePage() {
             <p className="text-xs font-semibold uppercase tracking-widest text-zillow-blue mb-3">Enablement Modules</p>
             <h2 className="font-serif text-3xl text-zillow-navy">The Program</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
             {programCards.map(({ title, href, desc, Icon }) => (
               <Link
                 key={href}
@@ -180,10 +194,27 @@ export default function HomePage() {
       <section className="max-w-5xl mx-auto px-6 py-16">
         <div className="bg-gray-50 border-l-4 border-zillow-blue rounded-xl p-8 md:p-10">
           <h3 className="font-serif text-xl text-zillow-navy mb-4">About This Program</h3>
-          <p className="text-[#374151] text-sm leading-relaxed mb-6 max-w-2xl">
-            This enablement system was designed by Chris Oliver as a demonstration of product launch readiness program design.
-            Every element — the launch brief, certification, manager dashboard, hypothesis log, and knowledge base — maps directly
-            to a core competency required for senior product enablement roles.
+          <p className="text-[#374151] text-sm leading-relaxed mb-5">
+            This enablement system was built by Chris Oliver to demonstrate senior product enablement program design.
+            Each module maps directly to a core competency in the role:
+          </p>
+          <ul className="flex flex-col gap-2 mb-5 text-sm">
+            {[
+              ['Launch Brief',        'translating product changes into clear, actionable programs'],
+              ['Certification',       'driving excellence in certification execution'],
+              ['Manager Dashboard',   'analyzing adoption trends and measuring readiness'],
+              ['Hypothesis Log',      'scientific approach to hypothesis testing and iteration'],
+              ['Knowledge Base',      'cataloging product knowledge in a way that is easy to search, find, and use'],
+            ].map(([module, competency]) => (
+              <li key={module} className="flex gap-2 items-baseline">
+                <span className="font-semibold text-zillow-navy whitespace-nowrap">{module}</span>
+                <span className="text-zillow-slate">→</span>
+                <span className="text-[#374151]">{competency}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm font-semibold text-zillow-blue mb-6">
+            Built for Zillow's Senior Manager of Product Enablement role.
           </p>
           <div className="flex flex-wrap gap-4">
             <a
