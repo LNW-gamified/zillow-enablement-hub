@@ -24,26 +24,26 @@ type Risk = 'high' | 'mid' | 'low';
 // ─── Seed data ────────────────────────────────────────────────────────────────
 
 const SEED: Rep[] = [
-  { id: 's01', rep_name: 'Jordan Mills',      score: 92, passed: true,  completed_at: '2026-04-15T10:00:00Z', real: false },
-  { id: 's02', rep_name: 'Priya Nair',        score: 88, passed: true,  completed_at: '2026-04-16T09:30:00Z', real: false },
-  { id: 's03', rep_name: 'Marcus Lee',        score: 95, passed: true,  completed_at: '2026-04-17T08:45:00Z', real: false },
-  { id: 's04', rep_name: 'Derek Walsh',       score: 74, passed: true,  completed_at: '2026-04-19T14:15:00Z', real: false },
-  { id: 's05', rep_name: 'Simone Grant',      score: 71, passed: true,  completed_at: '2026-04-21T09:00:00Z', real: false },
-  { id: 's06', rep_name: 'Nate Okafor',       score: 81, passed: true,  completed_at: '2026-04-22T10:30:00Z', real: false },
-  { id: 's07', rep_name: 'Brie Hoffman',      score: 55, passed: false, completed_at: '2026-04-24T13:00:00Z', real: false },
-  { id: 's08', rep_name: 'Cami Torres',       score: 68, passed: false, completed_at: '2026-04-25T11:00:00Z', real: false },
-  { id: 's09', rep_name: 'Ryan Patel',        score: 85, passed: true,  completed_at: '2026-04-26T09:15:00Z', real: false },
-  { id: 's10', rep_name: 'Keisha Monroe',     score: 90, passed: true,  completed_at: '2026-04-28T11:30:00Z', real: false },
-  { id: 's11', rep_name: 'Tyler Brooks',      score: 62, passed: false, completed_at: '2026-04-29T14:00:00Z', real: false },
-  { id: 's12', rep_name: 'Aisha Washington',  score: 77, passed: true,  completed_at: '2026-05-01T10:15:00Z', real: false },
-  { id: 's13', rep_name: 'Connor Hayes',      score: 83, passed: true,  completed_at: '2026-05-03T09:45:00Z', real: false },
-  { id: 's14', rep_name: 'Lucia Fernandez',   score: 91, passed: true,  completed_at: '2026-05-05T08:30:00Z', real: false },
-  { id: 's15', rep_name: 'Devon Park',        score: 69, passed: false, completed_at: '2026-05-06T13:30:00Z', real: false },
-  { id: 's16', rep_name: 'Megan Tully',       score: 78, passed: true,  completed_at: '2026-05-08T10:00:00Z', real: false },
-  { id: 's17', rep_name: 'James Obi',         score: 86, passed: true,  completed_at: '2026-05-10T09:00:00Z', real: false },
-  { id: 's18', rep_name: 'Sara Lindqvist',    score: 73, passed: true,  completed_at: '2026-05-11T14:45:00Z', real: false },
-  { id: 's19', rep_name: 'Chris Nakamura',    score: 58, passed: false, completed_at: '2026-05-13T11:15:00Z', real: false },
-  { id: 's20', rep_name: 'Danielle Russo',    score: 80, passed: true,  completed_at: '2026-05-15T09:30:00Z', real: false },
+  { id: 's01', rep_name: 'Jordan Mills',     score: 92, passed: true,  completed_at: '2026-04-15T10:00:00Z', real: false },
+  { id: 's02', rep_name: 'Priya Nair',       score: 88, passed: true,  completed_at: '2026-04-16T09:30:00Z', real: false },
+  { id: 's03', rep_name: 'Marcus Lee',       score: 95, passed: true,  completed_at: '2026-04-19T08:45:00Z', real: false },
+  { id: 's04', rep_name: 'Derek Walsh',      score: 74, passed: true,  completed_at: '2026-04-24T14:15:00Z', real: false },
+  { id: 's05', rep_name: 'Simone Grant',     score: 71, passed: true,  completed_at: '2026-04-26T09:00:00Z', real: false },
+  { id: 's06', rep_name: 'Nate Okafor',      score: 81, passed: true,  completed_at: '2026-04-26T10:30:00Z', real: false },
+  { id: 's07', rep_name: 'Brie Hoffman',     score: 55, passed: false, completed_at: '2026-04-28T08:00:00Z', real: false },
+  { id: 's08', rep_name: 'Cami Torres',      score: 68, passed: false, completed_at: '2026-04-28T11:00:00Z', real: false },
+  { id: 's09', rep_name: 'Ryan Patel',       score: 85, passed: true,  completed_at: '2026-04-28T15:15:00Z', real: false },
+  { id: 's10', rep_name: 'Keisha Monroe',    score: 90, passed: true,  completed_at: '2026-04-29T08:30:00Z', real: false },
+  { id: 's11', rep_name: 'Tyler Brooks',     score: 62, passed: false, completed_at: '2026-04-29T11:00:00Z', real: false },
+  { id: 's12', rep_name: 'Aisha Washington', score: 77, passed: true,  completed_at: '2026-04-29T14:45:00Z', real: false },
+  { id: 's13', rep_name: 'Connor Hayes',     score: 83, passed: true,  completed_at: '2026-05-01T09:00:00Z', real: false },
+  { id: 's14', rep_name: 'Lucia Fernandez',  score: 91, passed: true,  completed_at: '2026-05-01T13:30:00Z', real: false },
+  { id: 's15', rep_name: 'Devon Park',       score: 69, passed: false, completed_at: '2026-05-03T10:15:00Z', real: false },
+  { id: 's16', rep_name: 'Megan Tully',      score: 78, passed: true,  completed_at: '2026-05-05T09:00:00Z', real: false },
+  { id: 's17', rep_name: 'James Obi',        score: 86, passed: true,  completed_at: '2026-05-05T14:00:00Z', real: false },
+  { id: 's18', rep_name: 'Sara Lindqvist',   score: 73, passed: true,  completed_at: '2026-05-08T10:30:00Z', real: false },
+  { id: 's19', rep_name: 'Chris Nakamura',   score: 58, passed: false, completed_at: '2026-05-11T11:15:00Z', real: false },
+  { id: 's20', rep_name: 'Danielle Russo',   score: 80, passed: true,  completed_at: '2026-05-15T09:30:00Z', real: false },
 ];
 
 const SCORE_BUCKETS = [
@@ -135,18 +135,19 @@ function StatCard({
   );
 }
 
-function GaugeChart({ pct }: { pct: number }) {
+function GaugeChart({ pct, failed }: { pct: number; failed: number }) {
   const r = 80;
   const cx = 100;
   const cy = 100;
   const circ = 2 * Math.PI * r;
   const offset = circ * (1 - pct / 100);
   const { stroke, text, bg } = gaugeColor(pct);
+  const repWord = failed === 1 ? 'rep needs' : `${failed} reps need`;
   const goNoGo = pct >= 80
     ? { label: '✅ Launch Ready', sub: 'Team has cleared the certification threshold.' }
     : pct >= 70
-    ? { label: '⚠️ Proceed with Caution', sub: '1–2 reps need recertification.' }
-    : { label: '🚫 Launch Risk', sub: 'Delay go-live — drive recertification.' };
+    ? { label: '⚠️ Proceed with Caution', sub: `${repWord} recertification before launch.` }
+    : { label: '🚫 Launch Risk', sub: `${repWord} recertification — delay go-live.` };
 
   return (
     <div className="flex flex-col items-center gap-3 h-full justify-between py-2">
@@ -315,11 +316,12 @@ export default function DashboardPage() {
     return q ? allReps.filter((r) => r.rep_name.toLowerCase().includes(q)) : allReps;
   }, [allReps, search]);
 
+  const retryWord = failed === 1 ? '1 rep needs' : `${failed} reps need`;
   const bannerCfg = readyPct >= 80
-    ? { bg: 'bg-green-50', border: 'border-green-500', heading: 'text-green-800', sub: 'text-green-700', label: '✅ Launch Ready', body: 'Team has met the certification threshold. Recommend proceeding with Zillow Pro go-live.' }
+    ? { bg: 'bg-green-50', border: 'border-green-500', heading: 'text-green-800', sub: 'text-green-700', label: '✅ Launch Ready', body: `All ${passed} certified reps have cleared the threshold. Recommend proceeding with Zillow Pro go-live.` }
     : readyPct >= 70
-    ? { bg: 'bg-amber-50', border: 'border-amber-500', heading: 'text-amber-800', sub: 'text-amber-700', label: '⚠️ Proceed with Caution', body: 'Most reps are certified but 1–2 need recertification before launch.' }
-    : { bg: 'bg-red-50',   border: 'border-red-500',   heading: 'text-red-800',   sub: 'text-red-700',   label: '🚫 Launch Risk', body: 'Team has not met certification threshold. Delay go-live and schedule recertification for at-risk reps.' };
+    ? { bg: 'bg-amber-50', border: 'border-amber-500', heading: 'text-amber-800', sub: 'text-amber-700', label: '⚠️ Proceed with Caution', body: `${passed} of ${total} reps are certified. ${retryWord} recertification before launch.` }
+    : { bg: 'bg-red-50',   border: 'border-red-500',   heading: 'text-red-800',   sub: 'text-red-700',   label: '🚫 Launch Risk', body: `Only ${passed} of ${total} reps are certified. ${retryWord} recertification — delay go-live.` };
 
   const launchColor = daysToLaunch <= 14 ? '#f59e0b' : daysToLaunch <= 30 ? '#006AFF' : '#006AFF';
 
@@ -425,7 +427,7 @@ export default function DashboardPage() {
             className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6"
             style={{ background: gaugeColor(readyPct).bg }}
           >
-            <GaugeChart pct={readyPct} />
+            <GaugeChart pct={readyPct} failed={failed} />
           </div>
 
           {/* Completion Timeline */}
@@ -477,6 +479,23 @@ export default function DashboardPage() {
                   Live data…
                 </span>
               )}
+              <button
+                onClick={() => {
+                  const rows = [['Rep Name', 'Score', 'Status', 'Completed', 'Readiness Risk']];
+                  filteredReps.forEach((r) => rows.push([r.rep_name, String(r.score), r.passed ? 'Certified' : 'Needs Retry', fmtDate(r.completed_at), r.score >= 80 ? 'High Confidence' : r.passed ? 'Certified' : 'Needs Retry']));
+                  const csv = rows.map((r) => r.join(',')).join('\n');
+                  const a = document.createElement('a');
+                  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+                  a.download = 'zillow-pro-certification-report.csv';
+                  a.click();
+                }}
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-zillow-blue border border-zillow-blue rounded-xl hover:bg-blue-50 transition-colors"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Export Report
+              </button>
               <div className="relative">
                 <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -522,7 +541,7 @@ export default function DashboardPage() {
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center flex-shrink-0">
                             <span className="text-xs font-bold text-zillow-blue">
-                              {rep.rep_name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
+                              {rep.rep_name.split(' ').map((n) => n.replace(/[^A-Za-z]/g, '')[0] ?? '').join('').toUpperCase().slice(0, 2)}
                             </span>
                           </div>
                           <div>
