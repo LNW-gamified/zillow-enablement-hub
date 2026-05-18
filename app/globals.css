@@ -57,3 +57,21 @@ body::before {
 }
 .slide-grid-open   { grid-template-rows: 1fr; }
 .slide-grid-closed { grid-template-rows: 0fr; }
+
+/* Page fade-in on mount */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-fade-in {
+  animation: fadeIn 300ms ease-out both;
+}
+
+/* Dashboard new-row green flash */
+@keyframes highlightNew {
+  0%, 50% { background-color: #bbf7d0; }
+  100%     { background-color: transparent; }
+}
+.row-highlight-new {
+  animation: highlightNew 2s ease-out;
+}

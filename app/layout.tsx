@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { DM_Sans, DM_Serif_Display } from 'next/font/google';
 import './globals.css';
 import NavBar from '@/components/NavBar';
+import PageWrapper from '@/components/PageWrapper';
 
 const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans' });
 const dmSerif = DM_Serif_Display({
@@ -20,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${dmSans.variable} ${dmSerif.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased font-sans">
         <NavBar />
-        <main className="flex-1 pt-16">{children}</main>
+        <main className="flex-1 pt-16"><PageWrapper>{children}</PageWrapper></main>
         <footer className="py-5 text-center text-xs text-gray-400 border-t border-gray-100 bg-white tracking-wide">
           Built by Chris Oliver · Sales Enablement · Zillow Group
         </footer>

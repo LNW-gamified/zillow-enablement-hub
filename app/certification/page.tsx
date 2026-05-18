@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import type confettiType from 'canvas-confetti';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -173,6 +174,19 @@ export default function CertificationPage() {
       .then(({ error }) => { if (error) console.error('Supabase save failed:', error.message); });
   }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── Confetti on pass ────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (phase !== 'results' || !passed) return;
+    let timer: ReturnType<typeof setTimeout>;
+    import('canvas-confetti').then(({ default: confetti }: { default: typeof confettiType }) => {
+      confetti({ particleCount: 150, spread: 80, origin: { y: 0.5 }, colors: ['#006AFF', '#4DA3FF', '#ffffff', '#071B2C'] });
+      timer = setTimeout(() => {
+        confetti({ particleCount: 80, spread: 60, origin: { y: 0.4, x: 0.25 }, colors: ['#006AFF', '#4DA3FF', '#ffffff'] });
+      }, 350);
+    });
+    return () => clearTimeout(timer);
+  }, [phase, passed]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Handlers ────────────────────────────────────────────────────────────────
 
   function handleBegin() {
@@ -272,38 +286,71 @@ export default function CertificationPage() {
 
   // ── Render: Results ──────────────────────────────────────────────────────────
 
+  const completionDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(new Date());
+  const dashboardHref = `/dashboard?rep=${encodeURIComponent(repName)}&score=${totalScore}&passed=${passed}`;
+
   if (phase === 'results') {
     return (
       <>
         {hero}
         <div className="max-w-2xl mx-auto px-6 py-12 flex flex-col gap-8">
 
-          {/* Certificate card */}
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-lg px-10 py-14 text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-zillow-slate mb-6">Zillow Pro · Sales Certification</p>
-            <p className="text-base text-zillow-slate mb-2">{repName}</p>
-            <div className="my-4">
-              <span className="font-serif text-8xl text-zillow-blue tabular-nums leading-none">{totalScore}</span>
-              <span className="font-serif text-3xl text-zillow-slate/60"> / 100</span>
+          {/* Certificate card — premium when passed, simple when failed */}
+          {passed ? (
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden" style={{ border: '2px solid #071B2C' }}>
+              {/* Top gradient accent */}
+              <div className="h-2" style={{ background: 'linear-gradient(to right, #071B2C, #006AFF)' }} />
+              <div className="px-10 py-14 text-center">
+                <img
+                  src="/zillow-logo.svg"
+                  alt="Zillow"
+                  style={{ height: '30px', width: 'auto', margin: '0 auto 28px' }}
+                />
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zillow-slate mb-6">
+                  Certificate of Completion
+                </p>
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="flex-1 h-px bg-gray-200" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-zillow-blue" />
+                  <div className="flex-1 h-px bg-gray-200" />
+                </div>
+                <p className="text-sm text-zillow-slate mb-2">This certifies that</p>
+                <h2 className="font-serif text-4xl text-zillow-navy mb-5 leading-tight">{repName}</h2>
+                <p className="text-base text-zillow-slate mb-8 leading-relaxed">
+                  has successfully completed Zillow Pro Certification
+                </p>
+                <div className="flex items-baseline justify-center gap-1 mb-3">
+                  <span className="font-serif text-5xl text-zillow-blue tabular-nums leading-none">{totalScore}</span>
+                  <span className="font-serif text-2xl text-zillow-slate/50"> / 100</span>
+                </div>
+                <p className="text-xs text-gray-400 mb-10">{completionDate}</p>
+                <span className="inline-block bg-zillow-blue text-white font-semibold px-8 py-3 rounded-full text-sm tracking-wide shadow-md">
+                  Certified ✓
+                </span>
+                <div className="flex items-center gap-3 mt-10">
+                  <div className="flex-1 h-px bg-gray-200" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-zillow-blue" />
+                  <div className="flex-1 h-px bg-gray-200" />
+                </div>
+              </div>
             </div>
-            <span
-              className={`inline-block px-6 py-2 rounded-full text-sm font-semibold mt-2 ${
-                passed
-                  ? 'bg-green-600 text-white'
-                  : 'bg-amber-100 text-amber-700 border border-amber-200'
-              }`}
-            >
-              {passed ? '✓ Certified in Zillow Pro' : 'Not Yet Certified'}
-            </span>
-            {!passed && (
+          ) : (
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-lg px-10 py-14 text-center">
+              <p className="text-xs font-semibold uppercase tracking-widest text-zillow-slate mb-6">Zillow Pro · Sales Certification</p>
+              <p className="text-base text-zillow-slate mb-2">{repName}</p>
+              <div className="my-4">
+                <span className="font-serif text-8xl text-zillow-blue tabular-nums leading-none">{totalScore}</span>
+                <span className="font-serif text-3xl text-zillow-slate/60"> / 100</span>
+              </div>
+              <span className="inline-block px-6 py-2 rounded-full text-sm font-semibold mt-2 bg-amber-100 text-amber-700 border border-amber-200">
+                Not Yet Certified
+              </span>
               <p className="text-[#374151] text-sm mt-5 leading-relaxed">
                 You need {PASS_THRESHOLD} points to pass. Review the feedback below and try again.
               </p>
-            )}
-            <p className="text-xs text-gray-400 mt-6">
-              {new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(new Date())}
-            </p>
-          </div>
+              <p className="text-xs text-gray-400 mt-6">{completionDate}</p>
+            </div>
+          )}
 
           {/* Question breakdown */}
           <div className="flex flex-col gap-4">
@@ -342,7 +389,7 @@ export default function CertificationPage() {
           </div>
 
           <Link
-            href="/dashboard"
+            href={dashboardHref}
             className="self-center inline-flex items-center gap-2 bg-zillow-blue text-white font-semibold px-8 py-3.5 rounded-full hover:bg-[#0052CC] hover:scale-[1.02] transition-all duration-150 text-sm"
           >
             View Dashboard

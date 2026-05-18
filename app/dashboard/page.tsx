@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -121,10 +122,20 @@ function SortIcon({ dir }: { dir: SortDir }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function DashboardPage() {
+function DashboardContent() {
   const [realReps, setRealReps] = useState<Rep[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortDir, setSortDir] = useState<SortDir>(null);
+  const [newRepName, setNewRepName] = useState<string | null>(null);
+
+  const searchParams = useSearchParams();
+  const incomingRep   = searchParams.get('rep');
+  const incomingScore = parseInt(searchParams.get('score') ?? '0', 10);
+  const incomingPassed = searchParams.get('passed') === 'true';
+
+  useEffect(() => {
+    if (incomingRep) setNewRepName(incomingRep.toLowerCase());
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const today = useMemo(
     () => new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date()),
@@ -145,10 +156,25 @@ export default function DashboardPage() {
   const allReps: Rep[] = useMemo(() => {
     const seedIds = new Set(realReps.map((r) => r.rep_name.toLowerCase()));
     const merged = [...realReps, ...SEED.filter((s) => !seedIds.has(s.rep_name.toLowerCase()))];
+
+    if (incomingRep) {
+      const alreadyPresent = merged.some((r) => r.rep_name.toLowerCase() === incomingRep.toLowerCase());
+      if (!alreadyPresent) {
+        merged.unshift({
+          id: 'incoming-rep',
+          rep_name: incomingRep,
+          score: incomingScore,
+          passed: incomingPassed,
+          completed_at: new Date().toISOString(),
+          real: true,
+        });
+      }
+    }
+
     if (sortDir === 'asc')  return [...merged].sort((a, b) => a.score - b.score);
     if (sortDir === 'desc') return [...merged].sort((a, b) => b.score - a.score);
     return merged;
-  }, [realReps, sortDir]);
+  }, [realReps, sortDir, incomingRep, incomingScore, incomingPassed]);
 
   const total    = allReps.length;
   const passed   = allReps.filter((r) => r.passed).length;
@@ -243,11 +269,13 @@ export default function DashboardPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {allReps.map((rep, idx) => (
+                {allReps.map((rep, idx) => {
+                  const isNew = newRepName !== null && rep.rep_name.toLowerCase() === newRepName;
+                  return (
                   <tr
                     key={rep.id}
                     className={`transition-colors duration-100 hover:bg-blue-50/40 ${
-                      idx % 2 === 1 ? 'bg-gray-50/60' : 'bg-white'
+                      isNew ? 'row-highlight-new' : idx % 2 === 1 ? 'bg-gray-50/60' : 'bg-white'
                     }`}
                   >
                     <td className="px-6 py-4">
@@ -289,7 +317,8 @@ export default function DashboardPage() {
                       {fmtDate(rep.completed_at)}
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -302,5 +331,13 @@ export default function DashboardPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center text-zillow-slate text-sm">Loading dashboard…</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }
