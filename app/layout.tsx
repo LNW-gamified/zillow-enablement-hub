@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <NavBar />
         <main className="flex-1 pt-16"><PageWrapper>{children}</PageWrapper></main>
         <footer className="py-5 text-center text-xs text-gray-400 border-t border-gray-100 bg-white tracking-wide">
-          Built by Chris Oliver · Sales Enablement · Zillow Group
+          Built by Chris Oliver · Sales Enablement · Sales Enablement Portfolio
         </footer>
       </body>
     </html>

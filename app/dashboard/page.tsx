@@ -1,7 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -122,20 +121,25 @@ function SortIcon({ dir }: { dir: SortDir }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-function DashboardContent() {
+export default function DashboardPage() {
   const [realReps, setRealReps] = useState<Rep[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortDir, setSortDir] = useState<SortDir>(null);
   const [newRepName, setNewRepName] = useState<string | null>(null);
-
-  const searchParams = useSearchParams();
-  const incomingRep   = searchParams.get('rep');
-  const incomingScore = parseInt(searchParams.get('score') ?? '0', 10);
-  const incomingPassed = searchParams.get('passed') === 'true';
+  const [incomingRep, setIncomingRep] = useState<string | null>(null);
+  const [incomingScore, setIncomingScore] = useState(0);
+  const [incomingPassed, setIncomingPassed] = useState(false);
 
   useEffect(() => {
-    if (incomingRep) setNewRepName(incomingRep.toLowerCase());
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    const params = new URLSearchParams(window.location.search);
+    const rep = params.get('rep');
+    if (rep) {
+      setIncomingRep(rep);
+      setIncomingScore(parseInt(params.get('score') ?? '0', 10));
+      setIncomingPassed(params.get('passed') === 'true');
+      setNewRepName(rep.toLowerCase());
+    }
+  }, []);
 
   const today = useMemo(
     () => new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date()),
@@ -331,13 +335,5 @@ function DashboardContent() {
 
       </div>
     </div>
-  );
-}
-
-export default function DashboardPage() {
-  return (
-    <Suspense fallback={<div className="p-10 text-center text-zillow-slate text-sm">Loading dashboard…</div>}>
-      <DashboardContent />
-    </Suspense>
   );
 }
